@@ -3,6 +3,9 @@
     <div class="flex">
       {{ this.lives }} Lives | Score: {{ this.score }}
     </div>
+    <div>
+      Highest Score: {{ this.highestScore }}
+    </div>
     <div class="rounded border border-solid border-black shadow-lg my-4 p-4 relative w-64 h-128 flex items-center justify-center">
       <div class="absolute left-0 top-0 p-2">
         {{ topCard.suit }}
@@ -37,7 +40,8 @@
       return {
         cards: [],
         lives: 3,
-        score: 0
+        score: 0,
+        highScore: 0
       }
     },
 
@@ -55,8 +59,21 @@
           return this.cards[1];
         }
         return {suit: '', value: ''};
+      },
+
+      highestScore(){
+        if(this.highScore === null){
+          return 0;
+        }
+        return this.score > this.highScore ? this.score : this.highScore;
       }
 
+    },
+
+    watch:{
+      highestScore(oldVal, newVal){
+        window.localStorage.setItem('high_score', this.highestScore);
+      }
     },
 
     methods:{
@@ -92,7 +109,6 @@
         }
         
         this.cycleTopToBot();
-
       },
 
       cycleTopToBot(){
@@ -112,6 +128,8 @@
         .then(response => {
           this.cards = shuffle(response.data);
         });
+      this.highScore = window.localStorage.getItem('high_score');
+      // window.localStorage.getItem('high_score') ? window.localStorage.getItem('high_score') : 0;
     }
   }
 </script>
