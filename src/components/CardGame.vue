@@ -8,19 +8,19 @@
     </div>
     <div class="rounded border border-solid border-black shadow-lg my-4 p-4 relative w-64 h-128 flex items-center justify-center">
       <div class="absolute left-0 top-0 p-2">
-        {{ topCard.suit }}
+        {{ topCard.value }}
       </div>
       <div class="absolute right-0 bottom-0 p-2">
-        {{ topCard.suit }}
+        {{ topCard.value }}
       </div>
-      {{ topCard.value }}
+      {{ topCard.suit }}
     </div>
     <div>
       Will the next card be higher or lower?
     </div>
     <div class="flex">
-      <button class="bg-blue-200 rounded px-4 py-2 mr-1" @click.prevent="higher">Higher</button>
-      <button class="bg-red-200 rounded px-4 py-2 ml-1" @click.prevent="lower">Lower</button>
+      <button class="bg-blue-200 rounded px-4 py-2 mr-1" v-if="!dead" @click.prevent="higher">Higher</button>
+      <button class="bg-red-200 rounded px-4 py-2 ml-1" v-if="!dead" @click.prevent="lower">Lower</button>
     </div>
     <div class="my-2">
       <button class="bg-orange-200 rounded px-4 py-1 text-sm" @click.prevent="reset">Shuffle Deck (Reset)</button>
@@ -66,6 +66,10 @@
           return 0;
         }
         return this.score > this.highScore ? this.score : this.highScore;
+      },
+
+      dead(){
+        return this.lives == 0;
       }
 
     },
