@@ -1,21 +1,26 @@
 <template>
   <div class="h-screen flex flex-col items-center justify-center ">
-    <div class="flex">
+    <div class="flex" v-if="!dead">
       {{ this.lives }} Lives | Score: {{ this.score }}
+    </div>
+    <div v-else>
+      YOU LOSE!
     </div>
     <div>
       Highest Score: {{ this.highestScore }}
     </div>
     <div class="rounded border border-solid border-black shadow-lg my-4 p-4 relative w-64 h-128 flex items-center justify-center">
-      <div class="absolute left-0 top-0 p-2">
+      <div class="absolute left-0 top-0 p-2 font-bold flex flex-col" :style="{ color: color }">
         {{ topCard.value }}
       </div>
-      <div class="absolute right-0 bottom-0 p-2">
+      <div class="absolute right-0 bottom-0 p-2 font-bold" :style="{ color: color }">
         {{ topCard.value }}
       </div>
-      {{ topCard.suit }}
+      <div class="font-bold text-2xl" :style="{ color: color }">
+        {{ topCard.suit }}
+      </div>
     </div>
-    <div>
+    <div class="mt-2 mb-4">
       Will the next card be higher or lower?
     </div>
     <div class="flex">
@@ -41,7 +46,25 @@
         cards: [],
         lives: 3,
         score: 0,
-        highScore: 0
+        highScore: 0,
+        icons:{
+          diamonds:{
+            icon: 'spades.png',
+            color: 'red'
+          },
+          hearts:{
+            icon: 'hearts.png',
+            color: 'red'
+          },
+          clubs: {
+            icon: 'clubs.png',
+            color: 'black',
+          },
+          spades: {
+            icon: 'spades.png',
+            color: 'black'
+          }
+        }
       }
     },
 
@@ -70,6 +93,20 @@
 
       dead(){
         return this.lives == 0;
+      },
+
+      color(){
+        if(this.topCard.suit !== ''){
+          return this.icons[this.topCard.suit].color;
+        }
+        return 'black';
+      },
+
+      icon(){
+        if(this.topCard.suit !== ''){
+          return this.icons[this.topCard.suit].icon;
+        }
+        return null;
       }
 
     },
