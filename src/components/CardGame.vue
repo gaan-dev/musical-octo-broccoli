@@ -44,8 +44,15 @@
     },
 
     methods:{
-      higher(){
+      value(card){
+        let map = {'A': 1, 'J':11, 'Q': 12, 'K': 13};
+        if(Number.isFinite(card.value)){
+          return card.value;
+        }
+        return map[card.value];
+      },
 
+      higher(){
       },
 
       lower(){
