@@ -1,11 +1,22 @@
 <template>
-  <div class="h-screen flex items-center justify-center ">
-    Card game
+  <div class="h-screen flex flex-col items-center justify-center ">
+    <div>
+      {{ topCard.value }}
+      {{ topCard.suit }}
+    </div>
+    <div class="flex">
+      <button class="bg-blue-200 rounded px-4 py-2" @click.prevent="higher">Higher</button>
+      <button class="bg-red-200 rounded px-4 py-2" @click.prevent="lower">Lower</button>
+    </div>
+    <div>
+      <button class="bg-orange-200 rounded px-4 py-2" @click.prevent="shuffle">Shuffle Deck</button>
+    </div>
   </div>
 </template>
 
 <script>
   import axios from 'axios';
+  import shuffle from 'lodash/shuffle';
 
   export default {
     
@@ -17,21 +28,39 @@
       }
     },
 
-    methods:{
-      //https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
-      shuffleCards(cards){
-        for (let i = cards.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [cards[i], cards[j]] = [cards[j], cards[i]];
+    computed:{
+      topCard(){
+        if(this.cards.length > 0){
+          return this.cards[0];
         }
-        return cards;
+        return {suit: '', value: ''};
+      },
+      nextCard(){
+        if(this.cards.length > 0){
+          return this.cards[1];
+        }
+        return {suit: '', value: ''};
+      }
+    },
+
+    methods:{
+      higher(){
+
+      },
+
+      lower(){
+
+      },
+
+      shuffle(){
+        this.cards = shuffle(this.cards);
       }
     },
 
     mounted(){
       axios.get('https://higher-lower.code23.com/api/deck')
         .then(response => {
-          this.cards = this.shuffleCards(response.data);
+          this.cards = shuffle(response.data);
         });
     }
   }
